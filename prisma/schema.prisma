@@ -13,18 +13,18 @@ enum UserRole {
 }
 
 model Todo {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  content   String    @db.VarChar(255)
   userId    String?
-  User      User?    @relation(fields: [userId], references: [id])
+  User      User?     @relation(fields: [userId], references: [id])
 }
 
 //NextAuth Schemas
 model User {
   id            String    @id @default(cuid())
-  name          String?
+  i             String?
   email         String?   @unique
   password      String?
   emailVerified DateTime?
@@ -67,5 +67,5 @@ model VerificationToken {
   token      String   @unique
   expires    DateTime
 
-  @@unique([identifier, token])
+  @@unique([identifier, token])
 }

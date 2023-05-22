@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../auth/[...nextAuth]";
+import { authOptions } from "../auth/[...nextauth]";
 import prisma from "../../../prisma/client";
 
 export default async function handler(
@@ -16,28 +16,28 @@ export default async function handler(
         .json({ message: "Please login to start creating todos!" });
     }
 
-    const prismaUser = await prisma.user.findUnique({
-      where: { email: session?.user?.email },
+    const user = await prisma.user.findUnique({
+      where: { email: session?.user?.email as string },
     });
 
     console.log(req.body);
-    const title = req.body.title;
+    const content = req.body.content;
 
-    if (title.length > 300) {
+    if (content.length > 300) {
       return res.status(403).json({
         message:
           "You are exceeded maximum length of a Todo. Please write it shorter!",
       });
     }
-    if (!title.length) {
+    if (!content.length) {
       return res.status(403).json({ message: "Your todo is empty!" });
     }
 
     try {
-      const result = await prisma.post.create({
+      const result = await prisma.todo.create({
         data: {
-          title,
-          userId: prismaUser.id,
+          content,
+          userId: user?.id,
         },
       });
       res.status(200).json(result);
@@ -45,4 +45,12 @@ export default async function handler(
       res.status(403).json({ error: "Error has occured!" });
     }
   }
+
+  if (req.method === "DELETE") {
+    if (!session) {
+      return res.status(401).json({
+        message: "Please login to delete posts!",
+      });
+    }
+  }
 }
