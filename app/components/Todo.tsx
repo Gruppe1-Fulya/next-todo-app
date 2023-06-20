@@ -1,11 +1,17 @@
-import Image from "next/image";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../pages/api/auth/[...nextauth]";
-import { Todo } from "../types/Types";
-import ActionBox from "./ActionBox";
+import Image from 'next/image'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '../../pages/api/auth/[...nextauth]'
+import { Todo } from '../types/Types'
+import ActionBox from './ActionBox'
 
-export default async function Todo({ id, name, avatar, content }: Todo) {
-  const session = await getServerSession(authOptions);
+export default async function Todo({
+  id,
+  name,
+  avatar,
+  content,
+  status,
+}: Todo) {
+  const session = await getServerSession(authOptions)
   return (
     <div className="bg-white my-8 p-8 rounded-lg">
       <div className="flex items-center gap-2">
@@ -20,8 +26,12 @@ export default async function Todo({ id, name, avatar, content }: Todo) {
       </div>
       <div className="my-8 flex  justify-between">
         <p className="break-all text-black">{content}</p>
-        {session?.user ? <ActionBox id={id} /> : ""}
       </div>
+      {session?.user ? (
+        <ActionBox id={id} content={content} status={status} />
+      ) : (
+        ''
+      )}
     </div>
-  );
+  )
 }

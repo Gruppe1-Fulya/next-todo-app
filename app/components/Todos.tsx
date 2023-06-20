@@ -1,18 +1,18 @@
-import Todo from "./Todo";
+import Todo from './Todo'
 
 const getData = async () => {
-  const res = await fetch("http://localhost:3000/api/controller/getTodos");
+  const res = await fetch('http://localhost:3000/api/controller/getTodos')
 
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
+    throw new Error('Failed to fetch data')
   }
 
-  return res.json();
-};
+  return res.json()
+}
 
 export default async function Todos() {
-  const data = await getData();
+  const data = await getData()
 
   return (
     <div>
@@ -23,8 +23,9 @@ export default async function Todos() {
           name={todo.User.name}
           avatar={todo.User.image}
           content={todo.content}
+          status={todo.status}
         />
       ))}
     </div>
-  );
+  )
 }

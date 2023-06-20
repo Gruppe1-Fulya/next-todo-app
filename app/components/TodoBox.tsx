@@ -1,34 +1,34 @@
-"use client";
-
-import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
+'use client'
+//
+import { useState } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import axios, { AxiosError } from 'axios'
 
 export default function TodoBox() {
-  const [content, setContent] = useState("");
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [content, setContent] = useState('')
+  const [isDisabled, setIsDisabled] = useState(false)
 
   const { mutate } = useMutation(
-    async () => await axios.post("/api/controller/todo", { content }),
+    async () => await axios.post('/api/controller/todo', { content }),
     {
       onError: (error) => {
         if (error instanceof AxiosError) {
-          console.log(error);
+          console.log(error)
         }
-        setIsDisabled(false);
+        setIsDisabled(false)
       },
       onSuccess: (data) => {
-        console.log(data);
-        setContent("");
-        setIsDisabled(false);
+        console.log(data)
+        setContent('')
+        setIsDisabled(false)
       },
     }
-  );
+  )
 
   const submitPost = (e: React.FormEvent) => {
-    e.preventDefault();
-    mutate(content);
-  };
+    e.preventDefault()
+    mutate(content)
+  }
 
   return (
     <form
@@ -47,7 +47,7 @@ export default function TodoBox() {
       <div className=" flex items-center justify-between gap-2">
         <p
           className={`font-bold text-sm ${
-            content.length > 300 ? "text-red-700" : "text-gray-700"
+            content.length > 300 ? 'text-red-700' : 'text-gray-700'
           } `}
         >{`${content.length}/300`}</p>
         <button
@@ -59,5 +59,5 @@ export default function TodoBox() {
         </button>
       </div>
     </form>
-  );
+  )
 }
