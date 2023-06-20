@@ -18,13 +18,14 @@ model Todo {
   updatedAt DateTime? @updatedAt
   content   String    @db.VarChar(255)
   userId    String?
+  status    String    @default("Uncompleted")
   User      User?     @relation(fields: [userId], references: [id])
 }
 
 //NextAuth Schemas
 model User {
   id            String    @id @default(cuid())
-  i             String?
+  name          String?
   email         String?   @unique
   password      String?
   emailVerified DateTime?
@@ -67,5 +68,5 @@ model VerificationToken {
   token      String   @unique
   expires    DateTime
 
-  @@unique([identifier, token])
+  @@unique([identifier, token])
 }
